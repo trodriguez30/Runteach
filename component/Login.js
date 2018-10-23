@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import { StyleSheet, KeyboardAvoidingView, Text} from 'react-native';
+import { StyleSheet, KeyboardAvoidingView, Text, View , TouchableOpacity} from 'react-native';
 import { LinearGradient} from 'expo';
 import Logo from './Logo';
 import LoginForm from './LoginForm';
-import LoginButton from './LoginButton';
 import LoginOptions from './LoginOptions';
-import Principal from './Principal';
+
 
 
 class Login extends React.Component {
+
   render() {
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
@@ -17,10 +17,15 @@ class Login extends React.Component {
           style={styles.Gradient}
         >
         </LinearGradient>
-
         <Logo />
         <LoginForm />
-        <LoginButton />
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity 
+          onPress={() => this.props.navigation.navigate('PrincipalScreen')}
+          style={styles.touch}>
+          <Text style={styles.buttonText}>LOG IN</Text>
+        </TouchableOpacity>
+      </View>
         <LoginOptions style={styles.loginOptions}/>
       </KeyboardAvoidingView>
     );
@@ -44,7 +49,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#0b2333',
     fontWeight: '700' 
-  }
+  },
+  buttonContainer: {
+    paddingHorizontal: 20
+  },
+  touch: {
+    height: 40,
+    backgroundColor: '#0b2333',
+    paddingVertical: 10,
+    justifyContent: 'center',
+    borderRadius: 30
+  },
+  buttonText:{
+    textAlign: 'center',
+    color: '#ffffff',
+    fontWeight: '700' 
+  },
 });
 
 

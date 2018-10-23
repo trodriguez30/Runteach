@@ -27,6 +27,6 @@
     "react-native-nav": "^2.0.2",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-tab-view": "^1.2.0",
-    "react-navigation": "^3.0.0-alpha.6"
+    "react-navigation": "^2.18.0"
   }
 }

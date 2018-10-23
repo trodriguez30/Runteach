@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 })
 
 export default class Principal extends Component {
-
+ 
   render() {
     return (
     	<View>
