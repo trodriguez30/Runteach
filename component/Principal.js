@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, View, Text} from 'react-native';
 import PrincipalTab from './PrincipalTab';
 import NavBar from './NavBar';
+import firebase from '.././Firebase';
 
 const styles = StyleSheet.create({
   container: {

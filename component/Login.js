@@ -3,18 +3,8 @@ import { StyleSheet, Button, KeyboardAvoidingView, Text, View , TouchableOpacity
 import { LinearGradient} from 'expo';
 import Logo from './Logo';
 import LoginOptions from './LoginOptions';
-import * as firebase from 'firebase';
+import firebase from '.././Firebase';
 
-
-const firebaseConfig = {  
-    apiKey: "AIzaSyCqpHWp-hAFbRr7zX_MyxrXmVWvn4NC_ic",
-    authDomain: "runteach-a14a0.firebaseapp.com",
-    databaseURL: "https://runteach-a14a0.firebaseio.com",
-    projectId: "runteach-a14a0",
-    storageBucket: "runteach-a14a0.appspot.com",
-    messagingSenderId: "240619409117"
-};
-const firebaseApp = firebase.initializeApp(firebaseConfig);  
 
 class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null }

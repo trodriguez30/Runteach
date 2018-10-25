@@ -4,6 +4,7 @@ import Principal from './component/Principal';
 import {createStackNavigator} from 'react-navigation'
 import * as firebase from 'firebase';
 
+
 export default class App extends React.Component {
   static navigationOptions = {
   	header: 'none'
