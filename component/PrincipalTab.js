@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, Dimensions, View, ScrollView } from 'react-native';
 import Informacion from './Informacion';
 import Rol from './Rol';
-import LoginForm from './LoginForm';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 
 export default () => {

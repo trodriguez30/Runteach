@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import { StyleSheet, Button, KeyboardAvoidingView, Text, View , TouchableOpacity, Image, TextInput} from 'react-native';
+import { StyleSheet, Button, KeyboardAvoidingView, Text, View , TouchableOpacity, Image, TextInput, Alert} from 'react-native';
 import { LinearGradient} from 'expo';
 import Logo from './Logo';
-import LoginOptions from './LoginOptions';
 import firebase from '.././Firebase';
 
 
@@ -15,7 +14,9 @@ class Login extends React.Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => this.props.navigation.navigate('PrincipalScreen'))
-      .catch(error => this.setState({ errorMessage: error.message }))
+      .catch(
+        error => {(Alert.alert("ERROR", "Usuario o contraseña incorrecta"));}
+        )
   }
 
   render() {
@@ -63,7 +64,16 @@ class Login extends React.Component {
           <Text style={styles.buttonText}>LOG IN</Text>
         </TouchableOpacity>
       </View>
-        <LoginOptions style={styles.loginOptions}/>
+      <View style={styles.optionsContainer}>
+        <TouchableOpacity
+        onPress={() => this.props.navigation.navigate('SignUpScreen')}
+        >
+          <Text style={styles.optionsText}>Create Account</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={styles.optionsText}>Forgot your Password?</Text>
+        </TouchableOpacity>
+      </View>
       </KeyboardAvoidingView>
     );
   }
@@ -121,6 +131,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#ffffff',
     fontWeight: '700' 
+  },
+  optionsContainer: {
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 40,
+    marginTop: 20,
+  },
+  optionsText: {
+    color: 'white',
+    backgroundColor: 'transparent',
   },
 });
 

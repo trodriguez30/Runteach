@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, Text} from 'react-native';
+import { StyleSheet, Image, View, Text, Button} from 'react-native';
 import PrincipalTab from './PrincipalTab';
 import NavBar from './NavBar';
+import { Constants } from 'expo';
 import firebase from '.././Firebase';
 
 const styles = StyleSheet.create({
@@ -34,31 +35,51 @@ const styles = StyleSheet.create({
 })
 
 export default class Principal extends Component {
+
+  constructor() {
+  super();
+  console.ignoredYellowBox = [
+  'Setting a timer'
+  ];
+  }
  
+    Data = {}
+
+    componentDidMount(){
+    //console.log(firebase.auth().currentUser.uid);
+    firebase.database().ref('/users/' + firebase.auth().currentUser.uid).once('value').then(function(snapshot) {
+      this.Data = snapshot.val();
+    });
+    
+}
+
   render() {
+    var user = {};
+    user = this.Data;
     return (
     	<View>
     		<View>
-	        	<NavBar />
-	        </View>
-	      	<View style={styles.container}>
-	          <Image 
-	            style={styles.user}
-	            source={require('.././assets/img/icons/user.png')} 
-	          />
-	          <View style={styles.text}>
-	          	<Text style={styles.name}>Pepito Peréz</Text>
-	          <Text style={styles.ubication}><Image
-            style={styles.touchIcon}
-            source={require('.././assets/img/icons/location.png')}
-          />Barranquilla</Text>
-	          </View>
-	        </View>
-	        <View>
-	        	<PrincipalTab />
-	        </View>
+          <NavBar />
+        </View>
+        <View style={styles.container}>
+          <Image 
+            style={styles.user}
+            source={require('.././assets/img/icons/user.png')} 
+          />
+          <View style={styles.text}>
+            <Text>{user.nombre}</Text>
+            <Text style={styles.ubication}>
+              <Image
+              style={styles.touchIcon}
+              source={require('.././assets/img/icons/location.png')}/>
+              Barranquilla
+            </Text>
+          </View>
+        </View>
+	      <View>
+	        <PrincipalTab />
+	     </View>
       	</View>
-
     )
   }
 }

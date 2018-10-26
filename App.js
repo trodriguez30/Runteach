@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import Login from './component/Login';
 import Principal from './component/Principal';
+import SignUp from './component/SignUp';
 import {createStackNavigator} from 'react-navigation'
 import * as firebase from 'firebase';
 
 
 export default class App extends React.Component {
-  static navigationOptions = {
-  	header: 'none'
-  }
   render() {
     return (
     	<AppStackNavigator />
@@ -28,6 +26,9 @@ const AppStackNavigator = new createStackNavigator({
 		navigationOptions: () => ({
 	      header: null
 	    }),
+	},
+	SignUpScreen:{
+		screen:SignUp
 	}
 })
 
