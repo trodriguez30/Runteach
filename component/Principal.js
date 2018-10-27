@@ -4,6 +4,7 @@ import PrincipalTab from './PrincipalTab';
 import NavBar from './NavBar';
 import { Constants } from 'expo';
 import firebase from '.././Firebase';
+import Helpers from './Helpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,19 +38,44 @@ const styles = StyleSheet.create({
 export default class Principal extends Component {
 
   constructor() {
-  super();
-  console.ignoredYellowBox = [
-  'Setting a timer'
-  ];
+    super();
+    
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ];
+
+    this.state={
+      nombre:'',
+      apellido:'',
+      ubicacion:''
+    }
+
   }
  
     Data = {}
 
-    componentDidMount(){
+    async componentDidMount(){
     //console.log(firebase.auth().currentUser.uid);
-    firebase.database().ref('/users/' + firebase.auth().currentUser.uid).once('value').then(function(snapshot) {
-      this.Data = snapshot.val();
-    });
+    try{
+    let user = await firebase.auth().currentUser
+    Helpers.getNombre(user.uid ,(nombre) => {
+      this.setState({
+        nombre: nombre,
+      })
+    })
+    Helpers.getApellido(user.uid ,(apellido) => {
+      this.setState({
+        apellido: apellido,
+      })
+    })
+    Helpers.getUbicacion(user.uid ,(ubicacion) => {
+      this.setState({
+        ubicacion: ubicacion,
+      })
+    })
+  }catch(error){
+    console.log(error)
+  }
     
 }
 
@@ -67,12 +93,12 @@ export default class Principal extends Component {
             source={require('.././assets/img/icons/user.png')} 
           />
           <View style={styles.text}>
-            <Text>{user.nombre}</Text>
+            <Text>{this.state.nombre+' '+this.state.apellido}</Text>
             <Text style={styles.ubication}>
               <Image
               style={styles.touchIcon}
               source={require('.././assets/img/icons/location.png')}/>
-              Barranquilla
+              {this.state.ubicacion}
             </Text>
           </View>
         </View>

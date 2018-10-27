@@ -32,7 +32,8 @@ class SignUp extends React.Component {
         ubicacion: ubicacion,
         semestre: semestre,
         edad: edad,
-        celular: celular
+        celular: celular,
+        sexo: sexo
     })
     }).catch(
         error => {Alert.alert(error.message);}
