@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import firebase from '.././Firebase';
 
 export default class App extends Component {
    render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.touchContainer}>
+        <TouchableOpacity style={styles.touchContainer}
+        >
           <Image
             style={styles.touchIcon}
             source={require('.././assets/img/icons/student.png')}

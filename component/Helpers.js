@@ -89,6 +89,16 @@ import firebase from '.././Firebase';
       })
     }
 
+    static getSexo(userId,callback){
+      let SexoPath = "/users/"+userId+"/sexo"
+      firebase.database().ref(SexoPath).on('value',(snapshot) => {
+        let sexo = ''
+        if (snapshot.val()) {
+          sexo = snapshot.val()
+        }
+        callback(sexo)
+      })
+    }
 
   }
 

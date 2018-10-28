@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Button, KeyboardAvoidingView, ScrollView, Text, View , TouchableOpacity, Image, TextInput, Alert} from 'react-native';
-import { LinearGradient} from 'expo';
+import { StyleSheet, Button, KeyboardAvoidingView, ScrollView, Text, View , TouchableOpacity, Image, TextInput, Alert, Picker} from 'react-native';
 import Logo from './Logo';
 import firebase from '.././Firebase';
 
@@ -33,12 +32,14 @@ class SignUp extends React.Component {
         semestre: semestre,
         edad: edad,
         celular: celular,
-        sexo: sexo
-    })
+        sexo: sexo,
     }).catch(
         error => {Alert.alert(error.message);}
     )
-    this.props.navigation.navigate('LoginScreen');
+    }).then(() => { 
+    	Alert.alert("Mensaje", "Cuenta creada correctamente");
+    	this.props.navigation.navigate('LoginScreen');
+    })   
   }
   
   render() {
@@ -67,24 +68,25 @@ class SignUp extends React.Component {
             underlineColorAndroid='transparent'
             placeholder="Apellido"
             returnKeyType="next"
-            onSubmitEditing={() => this.universidadInput.focus()}
             ref={(input) => this.apellidosInput = input}
             placeholderTextColor="rgba(11,35,51,0.7)"
             />
           </View>
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/university.png')} style={styles.icon} />
-            <TextInput
-            style={styles.inputText}
-            onChangeText={universidad => this.setState({ universidad })}
-            value={this.state.universidad}
-            underlineColorAndroid='transparent'
-            placeholder="Universidad"
-            returnKeyType="next"
-            onSubmitEditing={() => this.carreraInput.focus()}
-            ref={(input) => this.universidadInput = input}
-            placeholderTextColor="rgba(11,35,51,0.7)"
-            />
+            <Picker
+			  selectedValue={this.state.universidad}
+			  style={styles.pickerList}
+			  onValueChange={(itemValue, itemIndex) => this.setState({universidad: itemValue})}
+			  mode="dropdown">
+			  <Picker.Item label="Universidad..." value="" />
+			  <Picker.Item label="Universidad de la Costa" value="universidad de la costa" />
+			  <Picker.Item label="Universidad Simón Bolivar" value="Universidad Simón Bolivar" />
+			  <Picker.Item label="Universidad Libre" value="Universidad Libre" />
+			  <Picker.Item label="Universidad del Norte" value="Universidad del Norte" />
+			  <Picker.Item label="Universidad Autónoma del Caribe" value="Universidad Autónoma del Caribe" />
+			  <Picker.Item label="Universidad del Atlántico" value="Universidad del Atlántico" />
+			</Picker>
           </View>
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/promotion.png')} style={styles.icon} />
@@ -109,24 +111,28 @@ class SignUp extends React.Component {
             underlineColorAndroid='transparent'
             placeholder="Ubicación"
             returnKeyType="next"
-            onSubmitEditing={() => this.semestreInput.focus()}
             ref={(input) => this.ubicacionInput = input}
             placeholderTextColor="rgba(11,35,51,0.7)"
             />
           </View>
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/semestre.png')} style={styles.icon} />
-            <TextInput
-            style={styles.inputText}
-            onChangeText={semestre => this.setState({ semestre })}
-            value={this.state.semestre}
-            underlineColorAndroid='transparent'
-            placeholder="Semestre"
-            returnKeyType="next"
-            onSubmitEditing={() => this.edadInput.focus()}
-            ref={(input) => this.semestreInput = input}
-            placeholderTextColor="rgba(11,35,51,0.7)"
-            />
+           	<Picker
+			  selectedValue={this.state.semestre}
+			  style={styles.pickerList}
+			  onValueChange={(itemValue, itemIndex) => this.setState({semestre: itemValue})}>
+			  <Picker.Item label="Semestre..." value="" />
+			  <Picker.Item label="1" value="1" />
+			  <Picker.Item label="2" value="2" />
+			  <Picker.Item label="3" value="3" />
+			  <Picker.Item label="4" value="4" />
+			  <Picker.Item label="5" value="5" />
+			  <Picker.Item label="6" value="6" />
+			  <Picker.Item label="7" value="7" />
+			  <Picker.Item label="8" value="8" />
+			  <Picker.Item label="9" value="9" />
+			  <Picker.Item label="10" value="10" />
+			</Picker>
           </View>
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/calendar.png')} style={styles.icon} />
@@ -137,24 +143,20 @@ class SignUp extends React.Component {
             underlineColorAndroid='transparent'
             placeholder="Edad"
             returnKeyType="next"
-            onSubmitEditing={() => this.sexoInput.focus()}
             ref={(input) => this.edadInput = input}
             placeholderTextColor="rgba(11,35,51,0.7)"
             />
           </View>
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/mf.png')} style={styles.icon} />
-            <TextInput
-            style={styles.inputText}
-            onChangeText={sexo => this.setState({ sexo })}
-            value={this.state.sexo}
-            underlineColorAndroid='transparent'
-            placeholder="Sexo"
-            returnKeyType="next"
-            onSubmitEditing={() => this.celularInput.focus()}
-            ref={(input) => this.sexoInput = input}
-            placeholderTextColor="rgba(11,35,51,0.7)"
-            />
+            <Picker
+			  selectedValue={this.state.sexo}
+			  style={styles.pickerList}
+			  onValueChange={(itemValue, itemIndex) => this.setState({sexo: itemValue})}>
+			  <Picker.Item label="Sexo..." value="" />
+			  <Picker.Item label="Femenino" value="Femenino" />
+			  <Picker.Item label="Masculino" value="Masculino" />
+			</Picker>
           </View>
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/phone.png')} style={styles.icon} />
@@ -232,6 +234,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 30,
     fontSize: 15,
+  },
+  pickerList:{
+  	height: 30,
+    marginLeft: 40,
+    backgroundColor: 'rgba(255,255,255,0.20)',
+    marginBottom: 20,
+    color: '#0b2333',
+    paddingHorizontal: 10,
+    borderRadius: 30,
   },
   buttonContainer: {
     paddingHorizontal: 20,

@@ -29,6 +29,6 @@ const AppStackNavigator = new createStackNavigator({
 	},
 	SignUpScreen:{
 		screen:SignUp
-	}
+	},
 })
 

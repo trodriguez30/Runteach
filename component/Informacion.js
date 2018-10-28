@@ -41,6 +41,11 @@ export default class SectionListBasics extends Component {
         edad: edad,
       })
     })
+    Helpers.getSexo(user.uid ,(sexo) => {
+      this.setState({
+        sexo: sexo,
+      })
+    })
   }catch(error){
     console.log(error)
   }
@@ -52,7 +57,7 @@ export default class SectionListBasics extends Component {
       <ScrollView style={styles.container}>
         <SectionList
           sections={[
-            {title: 'Información básica', data: ['Universidad: ' + this.state.universidad, 'Carrera ' + this.state.carrera, 'Semestre: ' + this.state.semestre, 'Edad: ' + this.state.edad + ' Año(s)', 'Sexo: Masculino']},
+            {title: 'Información básica', data: [ this.state.universidad, 'Carrera: ' + this.state.carrera, 'Semestre: ' + this.state.semestre, 'Edad: ' + this.state.edad + ' Año(s)', 'Sexo: ' + this.state.sexo]},
             {title: 'Áreas de conocimiento', data: ['Matemáticas discretas', 'Física cuántica', 'Modelos de ingeniería']},
           ]}
           renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
