@@ -7,7 +7,7 @@ import firebase from '.././Firebase';
 class SignUp extends React.Component {
   static navigationOptions = {
     title: 'Registro',
-
+    headerStyle: { backgroundColor: '#ffca3a'},
   };
 
   constructor() {
@@ -82,7 +82,8 @@ class SignUp extends React.Component {
 			  <Picker.Item label="Universidad..." value="" />
 			  <Picker.Item label="Universidad de la Costa" value="universidad de la costa" />
 			  <Picker.Item label="Universidad Simón Bolivar" value="Universidad Simón Bolivar" />
-			  <Picker.Item label="Universidad Libre" value="Universidad Libre" />
+			  <Picker.Item label="Universidad Libre - Sede Norte" value="Universidad Libre - Sede Norte" />
+        <Picker.Item label="Universidad Libre - Sede Centro" value="Universidad Libre - Sede Centro" />
 			  <Picker.Item label="Universidad del Norte" value="Universidad del Norte" />
 			  <Picker.Item label="Universidad Autónoma del Caribe" value="Universidad Autónoma del Caribe" />
 			  <Picker.Item label="Universidad del Atlántico" value="Universidad del Atlántico" />

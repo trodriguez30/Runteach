@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Login from './component/Login';
 import Principal from './component/Principal';
 import SignUp from './component/SignUp';
+import BuscarTutoria from './component/BuscarTutoria';
 import {createStackNavigator} from 'react-navigation'
 import * as firebase from 'firebase';
 
@@ -30,5 +31,8 @@ const AppStackNavigator = new createStackNavigator({
 	SignUpScreen:{
 		screen:SignUp
 	},
-})
+	BuscarTutoriaScreen:{
+		screen:BuscarTutoria
+	}
 
+})

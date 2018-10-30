@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, Text, Button} from 'react-native';
-import PrincipalTab from './PrincipalTab';
+import { StyleSheet, Image, View, Text, Button, Dimensions, ScrollView, TouchableOpacity} from 'react-native';
 import NavBar from './NavBar';
 import { Constants } from 'expo';
 import firebase from '.././Firebase';
 import Helpers from './Helpers';
+import Informacion from './Informacion';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,6 +33,30 @@ const styles = StyleSheet.create({
   	textAlign: 'center',
   	color: '#fff',
     fontSize: 13, 
+  },
+  rolContainer: {
+    flex: 1,
+    marginTop: 30,
+    paddingHorizontal: 50
+  },
+  touchContainer: {
+    marginTop: 20,
+    height: 60,
+    backgroundColor: '#0b2333',
+    paddingVertical: 20,
+    justifyContent: 'center',
+  },
+  touchIcon:{
+    position: 'absolute',
+    marginLeft: 20,
+    top: 16,
+  },
+  touchText:{
+    textAlign: 'center',
+    color: '#ffffff',
+    fontWeight: '700', 
+    fontSize: 20,
+    paddingLeft: 50,
   },
 })
 
@@ -103,7 +128,37 @@ export default class Principal extends Component {
           </View>
         </View>
 	      <View>
-	        <PrincipalTab />
+	        <ScrollableTabView
+            style={{flex:0, height: Dimensions.get('window').height,}}
+            initialPage={0}
+            renderTabBar={() => <DefaultTabBar />}
+          >
+            <ScrollView tabLabel='Perfil'><Informacion /></ScrollView>
+            <View tabLabel='Rol'>
+              <View style={styles.rolContainer}>
+                <TouchableOpacity style={styles.touchContainer}
+                onPress={() => this.props.navigation.navigate('BuscarTutoriaScreen')}
+                >
+                  <Image
+                    style={styles.touchIcon}
+                    source={require('.././assets/img/icons/student.png')}
+                    />
+                  <Text style={styles.touchText}>
+                    ESTUDIANTE
+                  </Text>
+                </TouchableOpacity>    
+                <TouchableOpacity style={styles.touchContainer}>
+                  <Text style={styles.touchText}>TUTOR</Text>
+                  <Image
+                    style={styles.touchIcon}
+                    source={require('.././assets/img/icons/tutor.png')}
+                  />
+                </TouchableOpacity>      
+              </View>
+            </View>
+            <ScrollView tabLabel='Historial'></ScrollView>
+            <ScrollView tabLabel='Editar'></ScrollView>
+          </ScrollableTabView>
 	     </View>
       	</View>
     )
