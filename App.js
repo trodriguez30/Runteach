@@ -3,6 +3,7 @@ import Login from './component/Login';
 import Principal from './component/Principal';
 import SignUp from './component/SignUp';
 import BuscarTutoria from './component/BuscarTutoria';
+import OpcionesTutor from './component/OpcionesTutor';
 import {createStackNavigator} from 'react-navigation'
 import * as firebase from 'firebase';
 
@@ -33,6 +34,8 @@ const AppStackNavigator = new createStackNavigator({
 	},
 	BuscarTutoriaScreen:{
 		screen:BuscarTutoria
+	},
+	OpcionesTutorScreen:{
+		screen:OpcionesTutor
 	}
-
 })

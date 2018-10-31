@@ -36,6 +36,24 @@ class SignUp extends React.Component {
     }).catch(
         error => {Alert.alert(error.message);}
     )
+    firebase.database().ref('tutores/' + res.user.uid).set({
+        estado: false
+    }).catch(
+        error => {Alert.alert(error.message);}
+    )
+    firebase.database().ref('tutores/' + res.user.uid + '/areas/').set({
+        matematicas:false,
+        calculo:false,
+        ingles:false,
+        programacion:false,
+        fisica: false,
+        quimica: false,
+        humanidades:false,
+        cienciasciviles:false,
+        metodosnumericos:false,
+    }).catch(
+        error => {Alert.alert(error.message);}
+    )
     }).then(() => { 
     	Alert.alert("Mensaje", "Cuenta creada correctamente");
     	this.props.navigation.navigate('LoginScreen');

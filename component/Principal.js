@@ -147,7 +147,9 @@ export default class Principal extends Component {
                     ESTUDIANTE
                   </Text>
                 </TouchableOpacity>    
-                <TouchableOpacity style={styles.touchContainer}>
+                <TouchableOpacity style={styles.touchContainer}
+                onPress={() => this.props.navigation.navigate('OpcionesTutorScreen')}
+                >
                   <Text style={styles.touchText}>TUTOR</Text>
                   <Image
                     style={styles.touchIcon}
