@@ -30,9 +30,9 @@ export default class OptionsTutor extends Component {
       isOnEstadoToggleSwitch: !state.isOnEstadoToggleSwitch,
     }));
 
-    _handleToggleSwitchMatatematicas = () =>
+    _handleToggleSwitchMatematicas = () =>
     this.setState(state => ({
-      isOnMatatematicasToggleSwitch: !state.isOnMatematicasToggleSwitch,
+      isOnMatematicasToggleSwitch: !state.isOnMatematicasToggleSwitch,
     }));
 
     _handleToggleSwitchCalculo = () =>
@@ -77,12 +77,13 @@ export default class OptionsTutor extends Component {
 
     render(){
       return(
+        <View>
           <ScrollView>
             <View>
               <View style={styles.titleSwitchContainer}>
                 <Text style={styles.titleSwitchText}>Estado de disponibilidad</Text>
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Disponibilidad</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchEstado}
@@ -94,63 +95,63 @@ export default class OptionsTutor extends Component {
               <View style={styles.titleSwitchContainer}>
                 <Text style={styles.titleSwitchText}>Áreas de conocimiento</Text>
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Matematicas</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchMatematicas}
                     value={this.state.isOnMatematicasToggleSwitch}
                 />
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Calculos</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchCalculo}
                     value={this.state.isOnCalculoToggleSwitch}
                 />
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Ingles</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchIngles}
                     value={this.state.isOnInglesToggleSwitch}
                 />
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Programación</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchProgramacion}
                     value={this.state.isOnProgramacionToggleSwitch}
                 />
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Física</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchFisica}
                     value={this.state.isOnFisicaToggleSwitch}
                 />
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Química</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchQuimica}
                     value={this.state.isOnQuimicaToggleSwitch}
                 />
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Humanidades</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchHum}
                     value={this.state.isOnHumToggleSwitch}
                 />
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Ciencias Civiles</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchCienciasCiviles}
                     value={this.state.isOnCienciasCivilesToggleSwitch}
                 />
               </View>
-              <View>
+              <View style={styles.switchContainer}>
                 <Text>Metodos Numericos</Text>
                 <Switch
                     onValueChange={this._handleToggleSwitchMetodosNumericos}
@@ -159,6 +160,13 @@ export default class OptionsTutor extends Component {
               </View>
             </View>
           </ScrollView>
+          <View>
+            <TouchableOpacity 
+              style={styles.touch}>
+              <Text style={styles.touchText}>CONFIRMAR CAMBIOS</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       );
     }
 }
@@ -166,14 +174,35 @@ export default class OptionsTutor extends Component {
 const styles = StyleSheet.create({
   titleSwitchContainer:{
     backgroundColor: '#0b2333',
-    paddingVertical: 15,
+    paddingVertical: 10,
   },
   titleSwitchText:{
     textAlign: 'center',
     color: '#fff',
     fontSize: 15,
+    fontWeight: 'bold',
+  },
+  switchContainer:{
+    flex: 1, 
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 15,
+    marginHorizontal: 20,
+  },
+  touch:{
+    position: 'absolute', 
+    left: 0, 
+    right: 0, 
+    bottom: 0,
+    height: 60,
+    backgroundColor: '#0b2333',
+    justifyContent: 'center',
+  },
+  touchText:{
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '700', 
   }
-
-
 });
 

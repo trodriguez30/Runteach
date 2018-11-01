@@ -13,6 +13,7 @@ export default class SectionListBasics extends Component {
     carrera:'',
     semestre:'',
     edad:'',
+    sexo:'',
   	}
 
   }
