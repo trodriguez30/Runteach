@@ -48,9 +48,6 @@ class SignUp extends React.Component {
         programacion:false,
         fisica: false,
         quimica: false,
-        humanidades:false,
-        cienciasciviles:false,
-        metodosnumericos:false,
     }).catch(
         error => {Alert.alert(error.message);}
     )

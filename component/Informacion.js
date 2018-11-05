@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, SectionList, StyleSheet, Text, ScrollView } from 'react-native';
+import { AppRegistry, SectionList, StyleSheet, Text, ScrollView, View, RefreshControl,  } from 'react-native';
 import Helpers from './Helpers';
 import firebase from '.././Firebase';
 
@@ -14,52 +14,76 @@ export default class SectionListBasics extends Component {
     semestre:'',
     edad:'',
     sexo:'',
+    areas: [],
+    refreshing: false,
   	}
 
   }
 
+  _onRefresh = () => {
+    this.setState({ refreshing: true }, function() { this.getData() });
+  }
+
   async componentDidMount(){
+    this.getData()
+  }
+  async getData(){
     //console.log(firebase.auth().currentUser.uid);
     try{
-    let user = await firebase.auth().currentUser
-    Helpers.getUniversidad(user.uid ,(universidad) => {
-      this.setState({
-        universidad: universidad,
+      let user = await firebase.auth().currentUser
+      Helpers.getUniversidad(user.uid ,(universidad) => {
+        this.setState({
+          universidad: universidad,
+        })
       })
-    })
-    Helpers.getCarrera(user.uid ,(carrera) => {
-      this.setState({
-        carrera: carrera,
+      Helpers.getCarrera(user.uid ,(carrera) => {
+        this.setState({
+          carrera: carrera,
+        })
       })
-    })
-    Helpers.getSemestre(user.uid ,(semestre) => {
-      this.setState({
-        semestre: semestre,
+      Helpers.getSemestre(user.uid ,(semestre) => {
+        this.setState({
+          semestre: semestre,
+        })
       })
-    })
-    Helpers.getEdad(user.uid ,(edad) => {
-      this.setState({
-        edad: edad,
+      Helpers.getEdad(user.uid ,(edad) => {
+        this.setState({
+          edad: edad,
+        })
       })
-    })
-    Helpers.getSexo(user.uid ,(sexo) => {
-      this.setState({
-        sexo: sexo,
+      Helpers.getSexo(user.uid ,(sexo) => {
+        this.setState({
+          sexo: sexo,
+        })
       })
-    })
-  }catch(error){
-    console.log(error)
-  }
-    
+      Helpers.getAreas(user.uid ,(areas) => {
+        this.setState({
+          areas: areas,
+        })
+      })
+    }catch(error){
+      console.log(error)
+    }
+    this.setState({ refreshing: false })
 	}
+
+
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView 
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
         <SectionList
           sections={[
             {title: 'Información básica', data: [ this.state.universidad, 'Carrera: ' + this.state.carrera, 'Semestre: ' + this.state.semestre, 'Edad: ' + this.state.edad + ' Año(s)', 'Sexo: ' + this.state.sexo]},
-            {title: 'Áreas de conocimiento', data: ['Matemáticas discretas', 'Física cuántica', 'Modelos de ingeniería']},
+            {title: 'Áreas de conocimiento', data: this.state.areas },
           ]}
           renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}

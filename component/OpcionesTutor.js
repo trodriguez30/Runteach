@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, Switch, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity, Switch, ScrollView, Dimensions, Alert } from 'react-native';
 import firebase from '.././Firebase';
 import Helpers from './Helpers';
 
@@ -12,70 +12,132 @@ export default class OptionsTutor extends Component {
       headerStyle: { backgroundColor: '#ffca3a'},
   };
   
-  state = {
-    isOnEstadoToggleSwitch: false,
-    isOnMatematicasToggleSwitch: false,
-    isOnCalculoToggleSwitch: false,
-    isOnCienciasCivilesToggleSwitch: false,
-    isOnFisicaToggleSwitch: false,
-    isOnHumanidadesToggleSwitch: false,
-    isOnInglesToggleSwitch: false,
-    isOnMetodosNumericosToggleSwitch: false,
-    isOnProgramacionToggleSwitch: false,
-    isOnQuimicaToggleSwitch: false,
-  };
 
-  _handleToggleSwitchEstado = () =>
-    this.setState(state => ({
-      isOnEstadoToggleSwitch: !state.isOnEstadoToggleSwitch,
-    }));
+  constructor() {
+    super();
+  
+    console.ignoredYellowBox = [
+      'Warning', 'Setting a timer'
+    ];
 
-    _handleToggleSwitchMatematicas = () =>
-    this.setState(state => ({
-      isOnMatematicasToggleSwitch: !state.isOnMatematicasToggleSwitch,
-    }));
+    this.state={
+      isOnEstadoToggleSwitch: false,
+      isOnMatematicasToggleSwitch: false,
+      isOnCalculoToggleSwitch: false,
+      isOnFisicaToggleSwitch: false,
+      isOnInglesToggleSwitch: false,
+      isOnProgramacionToggleSwitch: false,
+      isOnQuimicaToggleSwitch: false,
+    }
 
-    _handleToggleSwitchCalculo = () =>
-    this.setState(state => ({
-      isOnCalculoToggleSwitch: !state.isOnCalculoToggleSwitch,
-    }));
+  }
 
-    _handleToggleSwitchIngles = () =>
-    this.setState(state => ({
-      isOnInglesToggleSwitch: !state.isOnInglesToggleSwitch,
-    }));
+    Data = {}
 
-    _handleToggleSwitchProgramacion = () =>
-    this.setState(state => ({
-      isOnProgramacionToggleSwitch: !state.isOnProgramacionToggleSwitch,
-    }));
+    async componentDidMount(){
+      let user = await firebase.auth().currentUser;
+        try{
+        Helpers.getEstado(user.uid ,(estado) => {
+          this.setState({
+            isOnEstadoToggleSwitch: estado,
+          })
+        })
+        Helpers.getMatematicas(user.uid ,(matematicas) => {
+          this.setState({
+            isOnMatematicasToggleSwitch: matematicas,
+          })
+        })
+        Helpers.getCalculo(user.uid ,(calculo) => {
+          this.setState({
+            isOnCalculoToggleSwitch: calculo,
+          })
+        })
+        Helpers.getFisica(user.uid ,(fisica) => {
+          this.setState({
+            isOnFisicaToggleSwitch: fisica,
+          })
+        })
+        Helpers.getIngles(user.uid ,(ingles) => {
+          this.setState({
+            isOnInglesToggleSwitch: ingles,
+          })
+        })
+        Helpers.getProgramacion(user.uid ,(programacion) => {
+          this.setState({
+            isOnProgramacionToggleSwitch: programacion,
+          })
+        })
+        Helpers.getQuimica(user.uid ,(quimica) => {
+          this.setState({
+            isOnQuimicaToggleSwitch: quimica,
+          })
+        })
+      }catch(error){
+        console.log(error)
+      }
+    }
 
-    _handleToggleSwitchFisica = () =>
-    this.setState(state => ({
-      isOnFisicaToggleSwitch: !state.isOnFisicaToggleSwitch,
-    }));
+  _handleToggleSwitchEstado = async () =>
+    this.setState({
+      isOnEstadoToggleSwitch: !this.state.isOnEstadoToggleSwitch,
+  });
 
-    _handleToggleSwitchQuimica = () =>
-    this.setState(state => ({
-      isOnQuimicaToggleSwitch: !state.isOnQuimicaToggleSwitch,
-    }));
+  _handleToggleSwitchMatematicas = async () =>
+  this.setState({
+    isOnMatematicasToggleSwitch: !this.state.isOnMatematicasToggleSwitch,
+  });
 
-    _handleToggleSwitchHumanidades = () =>
-    this.setState(state => ({
-      isOnHumanidadesToggleSwitch: !state.isOnHumanidadesToggleSwitch,
-    }));
+  _handleToggleSwitchCalculo = async () =>
+  this.setState({
+    isOnCalculoToggleSwitch: !this.state.isOnCalculoToggleSwitch,
+  });
 
-    _handleToggleSwitchCienciasCiviles = () =>
-    this.setState(state => ({
-      isOnCienciasCivilesToggleSwitch: !state.isOnCienciasCivilesToggleSwitch,
-    }));
+  _handleToggleSwitchIngles = async () =>
+  this.setState({
+    isOnInglesToggleSwitch: !this.state.isOnInglesToggleSwitch,
+  });
 
-    _handleToggleSwitchMetodosNumericos = () =>
-    this.setState(state => ({
-      isOnMetodosNumericosToggleSwitch: !state.isOnMetodosNumericosToggleSwitch,
-    }));
+  _handleToggleSwitchProgramacion = async () =>
+  this.setState({
+    isOnProgramacionToggleSwitch: !this.state.isOnProgramacionToggleSwitch,
+  });
+
+  _handleToggleSwitchFisica = async () =>
+  this.setState({
+        isOnFisicaToggleSwitch: !this.state.isOnFisicaToggleSwitch
+  });
+
+  _handleToggleSwitchQuimica = async () =>
+  this.setState({
+    isOnQuimicaToggleSwitch: !this.state.isOnQuimicaToggleSwitch,
+  });
+
+
+    _handleUpdate = async () => {
+      let user = await firebase.auth().currentUser;
+      firebase.database().ref('tutores/' + user.uid).update({
+        estado: this.state.isOnEstadoToggleSwitch
+      }).catch(
+        error => {Alert.alert(error.message);}
+      );
+      firebase.database().ref('tutores/' + user.uid + '/areas').update({
+        matematicas: this.state.isOnMatematicasToggleSwitch,
+        calculo: this.state.isOnCalculoToggleSwitch,
+        fisica: this.state.isOnFisicaToggleSwitch,
+        ingles: this.state.isOnInglesToggleSwitch,
+        programacion: this.state.isOnProgramacionToggleSwitch,
+        quimica: this.state.isOnQuimicaToggleSwitch,
+      }).catch(
+        error => {Alert.alert(error.message);}
+      );
+      Alert.alert("Mensaje", "Cambios guardados");
+      this.props.navigation.navigate('PrincipalScreen');
+    }
+
 
     render(){
+      var user = {};
+      user = this.Data;
       return(
         <View>
           <ScrollView>
@@ -137,31 +199,11 @@ export default class OptionsTutor extends Component {
                     value={this.state.isOnQuimicaToggleSwitch}
                 />
               </View>
-              <View style={styles.switchContainer}>
-                <Text>Humanidades</Text>
-                <Switch
-                    onValueChange={this._handleToggleSwitchHum}
-                    value={this.state.isOnHumToggleSwitch}
-                />
-              </View>
-              <View style={styles.switchContainer}>
-                <Text>Ciencias Civiles</Text>
-                <Switch
-                    onValueChange={this._handleToggleSwitchCienciasCiviles}
-                    value={this.state.isOnCienciasCivilesToggleSwitch}
-                />
-              </View>
-              <View style={styles.switchContainer}>
-                <Text>Metodos Numericos</Text>
-                <Switch
-                    onValueChange={this._handleToggleSwitchMetodosNumericos}
-                    value={this.state.isOnMetodosNumericosToggleSwitch}
-                />
-              </View>
             </View>
           </ScrollView>
           <View>
             <TouchableOpacity 
+              onPress={this._handleUpdate}
               style={styles.touch}>
               <Text style={styles.touchText}>CONFIRMAR CAMBIOS</Text>
             </TouchableOpacity>

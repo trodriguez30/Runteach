@@ -20,19 +20,27 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70
   },
-  text:{
+  nameContainer:{
     opacity: 0.9,
-    marginBottom: 10,
+    marginBottom: 5,
+    flexDirection: 'row',
   },
-  name: {
+  circleState: {
+    width: 10,
+    height: 10,
+    borderRadius: 10/2,
+  },
+  textName: {
   	textAlign: 'center',
   	color: '#fff',
     fontSize: 16,
+    fontWeight: 'bold',
   },
   ubication:{
   	textAlign: 'center',
   	color: '#fff',
     fontSize: 13, 
+    marginBottom: 5,
   },
   rolContainer: {
     flex: 1,
@@ -72,37 +80,48 @@ export default class Principal extends Component {
     this.state={
       nombre:'',
       apellido:'',
-      ubicacion:''
+      ubicacion:'',
+      currentColor:'#ff595e',
     }
 
   }
  
-    Data = {}
+  Data = {}
 
-    async componentDidMount(){
-    //console.log(firebase.auth().currentUser.uid);
+  async componentDidMount(){
+  //console.log(firebase.auth().currentUser.uid);
     try{
-    let user = await firebase.auth().currentUser
-    Helpers.getNombre(user.uid ,(nombre) => {
-      this.setState({
-        nombre: nombre,
+      let user = await firebase.auth().currentUser
+      Helpers.getNombre(user.uid ,(nombre) => {
+        this.setState({
+          nombre: nombre,
+        })
       })
-    })
-    Helpers.getApellido(user.uid ,(apellido) => {
-      this.setState({
-        apellido: apellido,
+      Helpers.getApellido(user.uid ,(apellido) => {
+        this.setState({
+          apellido: apellido,
+        })
       })
-    })
-    Helpers.getUbicacion(user.uid ,(ubicacion) => {
-      this.setState({
-        ubicacion: ubicacion,
+      Helpers.getUbicacion(user.uid ,(ubicacion) => {
+        this.setState({
+          ubicacion: ubicacion,
+        })
       })
-    })
-  }catch(error){
-    console.log(error)
+       Helpers.getEstado(user.uid ,(estado) => {
+        if(estado){
+          this.setState({
+            currentColor: '#8ac926',
+          })
+        }else{
+          this.setState({
+            currentColor: '#ff595e',
+          })
+        }
+      })
+    }catch(error){
+      console.log(error)
+    }    
   }
-    
-}
 
   render() {
     var user = {};
@@ -117,8 +136,11 @@ export default class Principal extends Component {
             style={styles.user}
             source={require('.././assets/img/icons/user.png')} 
           />
-          <View style={styles.text}>
-            <Text>{this.state.nombre+' '+this.state.apellido}</Text>
+          <View style={styles.nameContainer}>
+            <Text style={styles.textName}>{this.state.nombre+' '+this.state.apellido}</Text>
+            <View style={[styles.circleState, {backgroundColor: this.state.currentColor}]} />
+          </View>
+          <View style={styles.ubicationContainer}>
             <Text style={styles.ubication}>
               <Image
               style={styles.touchIcon}

@@ -100,6 +100,98 @@ import firebase from '.././Firebase';
       })
     }
 
+    static getEstado(userId,callback){
+      let EstadoPath = "/tutores/"+userId+"/estado"
+      firebase.database().ref(EstadoPath).on('value',(snapshot) => {
+        let estado = ''
+        if (snapshot.val()) {
+          estado = snapshot.val()
+        }
+        callback(estado)
+      })
+    }
+
+    static getMatematicas(userId,callback){
+      let MatematicasPath = "/tutores/"+userId+"/areas/matematicas"
+      firebase.database().ref(MatematicasPath).on('value',(snapshot) => {
+        let matematicas = ''
+        if (snapshot.val()) {
+          matematicas = snapshot.val()
+        }
+        callback(matematicas)
+      })
+    }
+
+    static getCalculo(userId,callback){
+      let CalculoPath = "/tutores/"+userId+"/areas/calculo"
+      firebase.database().ref(CalculoPath).on('value',(snapshot) => {
+        let calculo = ''
+        if (snapshot.val()) {
+          calculo = snapshot.val()
+        }
+        callback(calculo)
+      })
+    }
+
+    static getFisica(userId,callback){
+      let FisicaPath = "/tutores/"+userId+"/areas/fisica"
+      firebase.database().ref(FisicaPath).on('value',(snapshot) => {
+        let fisica = ''
+        if (snapshot.val()) {
+          fisica = snapshot.val()
+        }
+        callback(fisica)
+      })
+    }
+
+    static getIngles(userId,callback){
+      let InglesPath = "/tutores/"+userId+"/areas/ingles"
+      firebase.database().ref(InglesPath).on('value',(snapshot) => {
+        let ingles = ''
+        if (snapshot.val()) {
+          ingles = snapshot.val()
+        }
+        callback(ingles)
+      })
+    }
+
+    static getProgramacion(userId,callback){
+      let ProgramacionPath = "/tutores/"+userId+"/areas/programacion"
+      firebase.database().ref(ProgramacionPath).on('value',(snapshot) => {
+        let programacion = ''
+        if (snapshot.val()) {
+         programacion = snapshot.val()
+        }
+        callback(programacion)
+      })
+    }
+
+    static getQuimica(userId,callback){
+      let QuimicaPath = "/tutores/"+userId+"/areas/quimica"
+      firebase.database().ref(QuimicaPath).on('value',(snapshot) => {
+        let quimica = ''
+        if (snapshot.val()) {
+          quimica = snapshot.val()
+        }
+        callback(quimica)
+      })
+    }
+
+    static getAreas(userId,callback){
+      let AreasPath = "/tutores/"+userId+"/areas"
+      firebase.database().ref(AreasPath).orderByValue().once('value', (snapshot) => {
+        let areas = []
+        if (snapshot.exists()) {
+          snapshot.forEach((child) => {
+            if(child.val()){
+              areas.push(child.key)
+            }
+          })
+        }
+         callback(areas)
+      })
+    }
+
   }
 
   module.exports = Helpers
