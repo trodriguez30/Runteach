@@ -26,7 +26,7 @@ import firebase from '.././Firebase';
     static getUniversidad(userId,callback){
       let UnivPath = "/users/"+userId+"/universidad"
       firebase.database().ref(UnivPath).on('value',(snapshot) => {
-        let univ = ''
+        let universidad = ''
         if (snapshot.val()) {
           universidad = snapshot.val()
         }
@@ -188,10 +188,88 @@ import firebase from '.././Firebase';
             }
           })
         }
-         callback(areas)
+        callback(areas)
       })
     }
 
-  }
+    static getTotalAreas(userId,callback){
+      let AreasPath = "/tutores/"+userId+"/areas"
+      firebase.database().ref(AreasPath).orderByValue().once('value', (snapshot) => {
+        let areas = []
+        if (snapshot.exists()) {
+          snapshot.forEach((child) => {
+              areas.push(child.key)
+          })
+        }
+        callback(areas)
+      })
+    }
 
+
+    static getTutores(callback){
+      let AreasPath = "/tutores"
+      firebase.database().ref(AreasPath).once('value',(snapshot) => {
+        let lista = []
+        if (snapshot.exists()) {
+          snapshot.forEach((child) => {
+            lista.push(child.key)
+          })
+        }
+        callback(lista)
+      })
+
+    }
+
+    static getInfoTutores(tutorId,callback){
+      let AreasPath = "/users/"+tutorId
+      firebase.database().ref(AreasPath).once('value',(snapshot) => {
+        let user = []
+        if (snapshot.exists()) {
+          user.push(tutorId)
+          user.push(snapshot.val().nombre+" "+snapshot.val().apellido)
+          user.push(snapshot.val().carrera + " Sem. "+snapshot.val().semestre)
+        }
+        callback(user)
+      })
+
+    }
+
+    static getTutoresDisponibles(tutor,userId,area,universidad,callback){
+      firebase.database().ref('/tutores/'+tutor+'/estado').once('value',(estado) => {
+        let disponible = ''
+        if(estado.val()){
+          firebase.database().ref('/tutores/'+tutor+'/areas/'+area).once('value',(areaS) => {
+            if(areaS.val()){
+              firebase.database().ref('/users/'+tutor+'/universidad').once('value',(uniS) => {
+                if(uniS.val()==universidad && tutor!=userId){
+                  callback(true)
+                }
+                else{
+                  callback(false)
+                }
+              });
+            }
+          });
+        }
+        callback(false)
+      });
+    }
+
+    static getCodigoHistorial(callback){
+      let caracteres = "abcdefghijkmnpqrtuvwxyzABCDEFGHIJKLMNPQRTUVWXYZ2346789";
+      let codigo = "";
+      for (i=0; i<30; i++) {
+        codigo += caracteres.charAt(Math.floor(Math.random()*caracteres.length))
+      }
+      callback(codigo)
+    }
+
+    static getFechaHoraHistorial(callback){
+      let hoy = new Date()
+      let fecha = hoy.getDate() + '' + (hoy.getMonth() + 1) + '' + hoy.getFullYear()
+      let hora = hoy.getHours() + '' + hoy.getMinutes() + '' + hoy.getSeconds()
+      let FechaHora = fecha + '' + hora
+      callback(FechaHora)
+    }
+}
   module.exports = Helpers

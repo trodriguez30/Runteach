@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import { StyleSheet, View , TouchableOpacity, TextInput, Dimensions} from 'react-native';
+import { StyleSheet, View , TouchableOpacity, TextInput, Dimensions, Picker} from 'react-native';
 import firebase from '.././Firebase';
 import { SearchBar } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import {createStackNavigator} from 'react-navigation'
+import Helpers from './Helpers';
 
 class App extends React.Component {
   static navigationOptions = {
@@ -11,13 +12,44 @@ class App extends React.Component {
     headerStyle: { backgroundColor: '#ffca3a'},
   };
 
+  constructor(props) {
+    super(props);
+
+    console.ignoredYellowBox = [
+      'Warning', 'Setting a timer'
+    ];
+
+    this.state = {
+      area: '',
+      areas:[],
+    }
+}
+    async componentDidMount(){
+    try{
+      let user = await firebase.auth().currentUser
+      Helpers.getTotalAreas(user.uid, (areas) => {
+        this.setState({
+          areas: areas,
+        })
+      })
+    }catch(error){
+      console.log(error)
+    }    
+  }
+  
+
   render() {
     return (
       <View style={styles.container}>
-        <SearchBar
-        lightTheme
-        icon={{ type: 'font-awesome', name: 'search' }}
-        placeholder='Escriba área de conocimiento aquí...' />
+        <Picker
+            selectedValue={this.state.area}
+            onValueChange={(itemValue, itemIndex) => this.setState({area: itemValue})}>
+            <Picker.Item label="Área..." value="" />
+            {this.state.areas.map((item, index) => {
+               return (< Picker.Item label={item} value={item} key={index} />);
+
+            })}  
+          </Picker> 
         <View style={styles.mapContainer}>
           <MapView style={styles.map}
           region={{
@@ -34,6 +66,7 @@ class App extends React.Component {
           }}
           title={'Universidad de la Costa'}
           image={require('../assets/img/icons/marker.png')}
+          onPress={() => this.props.navigation.navigate('ListaTutoresScreen', {area:this.state.area, universidad: 'universidad de la costa'})}
           />
 
           <MapView.Marker
@@ -43,6 +76,7 @@ class App extends React.Component {
           }}
           title={'Universidad Simon Bolivar'}
           image={require('../assets/img/icons/marker.png')}
+          onPress={() => this.props.navigation.navigate('ListaTutoresScreen', {area:this.state.area, universidad: 'universidad Simón Bolivar'})}
           />
 
           <MapView.Marker
@@ -52,6 +86,7 @@ class App extends React.Component {
           }}
           title={'Universidad Libre - Sede Centro'}
           image={require('../assets/img/icons/marker.png')}
+          onPress={() => this.props.navigation.navigate('ListaTutoresScreen', {area:this.state.area, universidad: 'Universidad Libre - Sede Centro'})}
           />
 
           <MapView.Marker
@@ -61,15 +96,7 @@ class App extends React.Component {
           }}
           title={'Universidad Libre - Sede Norte'}
           image={require('../assets/img/icons/marker.png')}
-          />
-
-          <MapView.Marker
-          coordinate={{
-            latitude: 10.995551,
-            longitude: -74.791463,
-          }}
-          title={'Universidad Simon Bolivar'}
-          image={require('../assets/img/icons/marker.png')}
+          onPress={() => this.props.navigation.navigate('ListaTutoresScreen', {area:this.state.area, universidad: 'Universidad Libre - Sede Norte'})}
           />
 
           <MapView.Marker
@@ -79,6 +106,7 @@ class App extends React.Component {
           }}
           title={'Universidad del Norte'}
           image={require('../assets/img/icons/marker.png')}
+          onPress={() => this.props.navigation.navigate('ListaTutoresScreen', {area:this.state.area, universidad: 'Universidad del Norte'})}
           />
 
           <MapView.Marker
@@ -88,6 +116,7 @@ class App extends React.Component {
           }}
           title={'Universidad Autónoma del Caribe'}
           image={require('../assets/img/icons/marker.png')}
+          onPress={() => this.props.navigation.navigate('ListaTutoresScreen', {area:this.state.area, universidad: 'Universidad Autónoma del Caribe'})}
           />
 
           <MapView.Marker
@@ -97,6 +126,7 @@ class App extends React.Component {
           }}
           title={'Universidad del Atlántico'}
           image={require('../assets/img/icons/marker.png')}
+          onPress={() => this.props.navigation.navigate('ListaTutoresScreen', {area:this.state.area, universidad: 'Universidad del Atlántico'})}
           />
 
           </MapView>

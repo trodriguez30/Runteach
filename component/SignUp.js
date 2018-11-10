@@ -90,19 +90,19 @@ class SignUp extends React.Component {
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/university.png')} style={styles.icon} />
             <Picker
-			  selectedValue={this.state.universidad}
-			  style={styles.pickerList}
-			  onValueChange={(itemValue, itemIndex) => this.setState({universidad: itemValue})}
-			  mode="dropdown">
-			  <Picker.Item label="Universidad..." value="" />
-			  <Picker.Item label="Universidad de la Costa" value="universidad de la costa" />
-			  <Picker.Item label="Universidad Simón Bolivar" value="Universidad Simón Bolivar" />
-			  <Picker.Item label="Universidad Libre - Sede Norte" value="Universidad Libre - Sede Norte" />
-        <Picker.Item label="Universidad Libre - Sede Centro" value="Universidad Libre - Sede Centro" />
-			  <Picker.Item label="Universidad del Norte" value="Universidad del Norte" />
-			  <Picker.Item label="Universidad Autónoma del Caribe" value="Universidad Autónoma del Caribe" />
-			  <Picker.Item label="Universidad del Atlántico" value="Universidad del Atlántico" />
-			</Picker>
+      			  selectedValue={this.state.universidad}
+      			  style={styles.pickerList}
+      			  onValueChange={(itemValue, itemIndex) => this.setState({universidad: itemValue})}
+      			  mode="dropdown">
+      			  <Picker.Item label="Universidad..." value="" />
+      			  <Picker.Item label="Universidad de la Costa" value="universidad de la costa" />
+      			  <Picker.Item label="Universidad Simón Bolivar" value="Universidad Simón Bolivar" />
+      			  <Picker.Item label="Universidad Libre - Sede Norte" value="Universidad Libre - Sede Norte" />
+              <Picker.Item label="Universidad Libre - Sede Centro" value="Universidad Libre - Sede Centro" />
+      			  <Picker.Item label="Universidad del Norte" value="Universidad del Norte" />
+      			  <Picker.Item label="Universidad Autónoma del Caribe" value="Universidad Autónoma del Caribe" />
+      			  <Picker.Item label="Universidad del Atlántico" value="Universidad del Atlántico" />
+      			</Picker>
           </View>
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/promotion.png')} style={styles.icon} />
@@ -134,21 +134,21 @@ class SignUp extends React.Component {
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/semestre.png')} style={styles.icon} />
            	<Picker
-			  selectedValue={this.state.semestre}
-			  style={styles.pickerList}
-			  onValueChange={(itemValue, itemIndex) => this.setState({semestre: itemValue})}>
-			  <Picker.Item label="Semestre..." value="" />
-			  <Picker.Item label="1" value="1" />
-			  <Picker.Item label="2" value="2" />
-			  <Picker.Item label="3" value="3" />
-			  <Picker.Item label="4" value="4" />
-			  <Picker.Item label="5" value="5" />
-			  <Picker.Item label="6" value="6" />
-			  <Picker.Item label="7" value="7" />
-			  <Picker.Item label="8" value="8" />
-			  <Picker.Item label="9" value="9" />
-			  <Picker.Item label="10" value="10" />
-			</Picker>
+      			  selectedValue={this.state.semestre}
+      			  style={styles.pickerList}
+      			  onValueChange={(itemValue, itemIndex) => this.setState({semestre: itemValue})}>
+      			  <Picker.Item label="Semestre..." value="" />
+      			  <Picker.Item label="1" value="1" />
+      			  <Picker.Item label="2" value="2" />
+      			  <Picker.Item label="3" value="3" />
+      			  <Picker.Item label="4" value="4" />
+      			  <Picker.Item label="5" value="5" />
+      			  <Picker.Item label="6" value="6" />
+      			  <Picker.Item label="7" value="7" />
+      			  <Picker.Item label="8" value="8" />
+      			  <Picker.Item label="9" value="9" />
+      			  <Picker.Item label="10" value="10" />
+      			</Picker>
           </View>
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/calendar.png')} style={styles.icon} />
@@ -166,13 +166,13 @@ class SignUp extends React.Component {
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/mf.png')} style={styles.icon} />
             <Picker
-			  selectedValue={this.state.sexo}
-			  style={styles.pickerList}
-			  onValueChange={(itemValue, itemIndex) => this.setState({sexo: itemValue})}>
-			  <Picker.Item label="Sexo..." value="" />
-			  <Picker.Item label="Femenino" value="Femenino" />
-			  <Picker.Item label="Masculino" value="Masculino" />
-			</Picker>
+      			  selectedValue={this.state.sexo}
+      			  style={styles.pickerList}
+      			  onValueChange={(itemValue, itemIndex) => this.setState({sexo: itemValue})}>
+      			  <Picker.Item label="Sexo..." value="" />
+      			  <Picker.Item label="Femenino" value="Femenino" />
+      			  <Picker.Item label="Masculino" value="Masculino" />
+      			</Picker>
           </View>
           <View style={styles.inputContainer}>
             <Image source={require('.././assets/img/icons/phone.png')} style={styles.icon} />

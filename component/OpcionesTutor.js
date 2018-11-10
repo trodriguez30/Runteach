@@ -199,6 +199,10 @@ export default class OptionsTutor extends Component {
                     value={this.state.isOnQuimicaToggleSwitch}
                 />
               </View>
+              <View style={styles.switchContainer}>
+                <Text>Química</Text>
+                <Switch />
+              </View>
             </View>
           </ScrollView>
           <View>

@@ -180,8 +180,7 @@ export default class Principal extends Component {
                 </TouchableOpacity>      
               </View>
             </View>
-            <ScrollView tabLabel='Historial'></ScrollView>
-            <ScrollView tabLabel='Editar'></ScrollView>
+            <ScrollView tabLabel='Configuración'></ScrollView>
           </ScrollableTabView>
 	     </View>
       	</View>

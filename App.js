@@ -4,6 +4,9 @@ import Principal from './component/Principal';
 import SignUp from './component/SignUp';
 import BuscarTutoria from './component/BuscarTutoria';
 import OpcionesTutor from './component/OpcionesTutor';
+import ListaTutores from './component/ListaTutores';
+import TutorSeleccionado from './component/TutorSeleccionado';
+import SolicitudTutoria from './component/SolicitudTutoria';
 import {createStackNavigator} from 'react-navigation'
 import * as firebase from 'firebase';
 
@@ -37,5 +40,14 @@ const AppStackNavigator = new createStackNavigator({
 	},
 	OpcionesTutorScreen:{
 		screen:OpcionesTutor
+	},
+	ListaTutoresScreen:{
+		screen:ListaTutores
+	},
+	TutorSeleccionadoScreen:{
+		screen:TutorSeleccionado
+	},
+	SolicitudTutoriaScreen:{
+		screen:SolicitudTutoria
 	}
 })
