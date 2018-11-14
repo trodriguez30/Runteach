@@ -13,7 +13,7 @@ class Login extends React.Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('PrincipalScreen'))
+      .then(() => this.props.navigation.navigate('PrincipalScreen', {data: true}))
       .catch(
         error => {(Alert.alert("ERROR", "Usuario o contraseña incorrecta"));}
         )

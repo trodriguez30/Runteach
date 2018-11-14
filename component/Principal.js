@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, Text, Button, Dimensions, ScrollView, TouchableOpacity} from 'react-native';
-import NavBar from './NavBar';
+import { StyleSheet, Image, View, Text, Button, Dimensions, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { Constants } from 'expo';
 import firebase from '.././Firebase';
 import Helpers from './Helpers';
 import Informacion from './Informacion';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import NavBar, { NavGroup, NavButton, NavButtonText, NavTitle } from 'react-native-nav'
 
 const styles = StyleSheet.create({
   container: {
@@ -13,6 +13,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffca3a',
     flexGrow: 1,
     justifyContent: 'center'
+  },
+  navBar: {
+    backgroundColor: '#ffca3a',
+  },
+  navBarTitle: {
+    color: '#rgba(0, 0, 0, 0.65)',
+    textAlign: 'left',
+  },
+  navBarOption: {
+    color: '#rgba(0, 0, 0, 0.45)',
   },
   user: {
   	marginTop: 10,
@@ -82,6 +92,8 @@ export default class Principal extends Component {
       apellido:'',
       ubicacion:'',
       currentColor:'#ff595e',
+      notificacionEstudiante:[],
+      notificacionTutor:[],
     }
 
   }
@@ -89,7 +101,8 @@ export default class Principal extends Component {
   Data = {}
 
   async componentDidMount(){
-  //console.log(firebase.auth().currentUser.uid);
+    const { navigation } = this.props;
+    const getData = navigation.getParam('data', 'NO-ID');
     try{
       let user = await firebase.auth().currentUser
       Helpers.getNombre(user.uid ,(nombre) => {
@@ -118,18 +131,65 @@ export default class Principal extends Component {
           })
         }
       })
+
+       /*los valores de notificacion estudiante y de notificacion tutor tienen que actualizarce automaticamente 
+       cuando se conteste una tutoria en la parte de tutor o cuando se marque como visto una solicitud de tutoria 
+       en la parte de estudiante
+       estos números se muestran en la barra de navegacion al lado de la campana
+       cuando carga por primera vez si se actualiza pero despues de contestar alguna notificacion no se modifican
+       los helpers de abajo cargan en un array todas las notificaciones
+       que despues en el render se cuentan la longitud para saber cuantas notificaciones hay*/
+
+       Helpers.getHistorial((historial) => {
+        historial.forEach((child) => {
+          Helpers.getNotificacionesEstudiante(child,user.uid, (not) => {
+            if(not){
+              this.setState({
+                notificacionEstudiante: this.state.notificacionEstudiante.concat([child]),
+              })
+            }
+          })
+          Helpers.getNotificacionesTutor(child,user.uid, (not) => {
+            if(not){
+              this.setState({
+                notificacionTutor: this.state.notificacionTutor.concat([child]),
+              })
+            }
+          })
+        })
+      })
+      
     }catch(error){
       console.log(error)
-    }    
+    }  
   }
 
+      
+
   render() {
-    var user = {};
-    user = this.Data;
     return (
     	<View>
     		<View>
-          <NavBar />
+          <NavBar style={styles}>
+            <NavButton>
+              <NavButtonText style={styles.navBarOption}>
+                <Image source={require('.././assets/img/icons/menu.png')} />
+              </NavButtonText>
+              </NavButton>
+              <NavTitle style={styles.navBarTitle}>
+                {"Perfil"}
+            </NavTitle>
+            <NavButton
+            onPress={() => this.props.navigation.navigate('NotificacionesScreen')}
+            >
+              <NavButtonText style={styles.navBarOption}>
+              <Text>
+                {this.state.notificacionEstudiante.length + this.state.notificacionTutor.length}
+                <Image source={require('.././assets/img/icons/notification.png')} />
+                </Text>
+              </NavButtonText>
+            </NavButton>
+          </NavBar>
         </View>
         <View style={styles.container}>
           <Image 

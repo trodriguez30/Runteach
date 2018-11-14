@@ -23,6 +23,17 @@ import firebase from '.././Firebase';
       })
     }
 
+    static getCelular(userId,callback){
+      let LNamePath = "/users/"+userId+"/celular"
+      firebase.database().ref(LNamePath).on('value',(snapshot) => {
+        let apellido = ''
+        if (snapshot.val()) {
+          apellido = snapshot.val()
+        }
+        callback(apellido)
+      })
+    }
+
     static getUniversidad(userId,callback){
       let UnivPath = "/users/"+userId+"/universidad"
       firebase.database().ref(UnivPath).on('value',(snapshot) => {
@@ -266,10 +277,88 @@ import firebase from '.././Firebase';
 
     static getFechaHoraHistorial(callback){
       let hoy = new Date()
-      let fecha = hoy.getDate() + '' + (hoy.getMonth() + 1) + '' + hoy.getFullYear()
-      let hora = hoy.getHours() + '' + hoy.getMinutes() + '' + hoy.getSeconds()
-      let FechaHora = fecha + '' + hora
+      let fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear()
+      let hora = hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds()
+      let FechaHora = fecha + ' - ' + hora
       callback(FechaHora)
     }
+
+    static getHistorial(callback){
+      let HistorialPath = "/historial"
+      firebase.database().ref(HistorialPath).once('value',(snapshot) => {
+        let lista = []
+        if (snapshot.exists()) {
+          snapshot.forEach((child) => {
+            lista.push(child.key)
+          })
+        }
+        callback(lista)
+      })
+    }
+
+    static getHistorialEstudiante(child,userId,callback){
+      firebase.database().ref('/historial/'+child).once('value',(historial) => {
+        if(historial.val().estudianteId==userId){
+          callback(true)
+        }else{
+          callback(false)
+        }
+      })
+    }
+
+    static getHistorialTutor(child,userId,callback){
+      firebase.database().ref('/historial/'+child).once('value',(historial) => {
+        if(historial.val().tutorId==userId){
+          callback(true)
+        }else{
+          callback(false)
+        }
+      })
+    }
+
+    static getHistorialInfo(child,callback){
+      let AreasPath = "/historial/"+child
+      firebase.database().ref(AreasPath).once('value',(snapshot) => {
+        let historial = []
+        if (snapshot.exists()) {
+          historial.push(child) //0
+          historial.push('Solicitud de tutoría') //1
+          historial.push(snapshot.val().area) //2
+          historial.push(snapshot.val().estado) //3
+          historial.push(snapshot.val().descripcion) //4
+          historial.push(snapshot.val().estudianteId) //5
+          historial.push(snapshot.val().tutorId) //6
+          historial.push(snapshot.val().fechahora) //7
+          historial.push(snapshot.val().titulo) //8
+          historial.push(snapshot.val().visto) //9
+        }
+        callback(historial)
+      })
+    }
+
+    static getNotificacionesEstudiante(child,userId,callback){
+      Helpers.getHistorialEstudiante(child,userId,(estudiante)=>{
+            if(estudiante){
+              Helpers.getHistorialInfo(child, (infoHistorial) => {
+                if(infoHistorial[3]!='pendiente' && infoHistorial[9]=='false'){
+                  callback(true)
+                }
+              })
+            }
+      })
+    }
+
+    static getNotificacionesTutor(child,userId,callback){
+      Helpers.getHistorialTutor(child,userId,(tutor)=>{
+            if(tutor){
+              Helpers.getHistorialInfo(child, (infoHistorial) => {
+                if(infoHistorial[3]=='pendiente'){
+                  callback(true)
+                }
+              })
+            }
+      })
+    }
+
 }
   module.exports = Helpers

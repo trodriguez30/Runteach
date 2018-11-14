@@ -71,7 +71,7 @@ class SolicitudTutoria extends React.Component {
         descripcion: this.state.descripcion,
         fechahora: this.state.fechahora,
         estado: this.state.estado,
-
+        visto: 'false',
     }).then(() => { 
       Alert.alert("Mensaje", "Solicitud enviada correctamente");
       this.props.navigation.navigate('PrincipalScreen');

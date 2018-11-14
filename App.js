@@ -7,6 +7,9 @@ import OpcionesTutor from './component/OpcionesTutor';
 import ListaTutores from './component/ListaTutores';
 import TutorSeleccionado from './component/TutorSeleccionado';
 import SolicitudTutoria from './component/SolicitudTutoria';
+import Notificaciones from './component/Notificaciones';
+import DetallesHistorialEstudiante from './component/DetallesHistorialEstudiante';
+import DetallesHistorialTutor from './component/DetallesHistorialTutor';
 import {createStackNavigator} from 'react-navigation'
 import * as firebase from 'firebase';
 
@@ -33,7 +36,7 @@ const AppStackNavigator = new createStackNavigator({
 	    }),
 	},
 	SignUpScreen:{
-		screen:SignUp
+		screen:SignUp,
 	},
 	BuscarTutoriaScreen:{
 		screen:BuscarTutoria
@@ -49,5 +52,15 @@ const AppStackNavigator = new createStackNavigator({
 	},
 	SolicitudTutoriaScreen:{
 		screen:SolicitudTutoria
+	},
+	NotificacionesScreen:{
+		screen:Notificaciones,
+	},
+	DetallesHistorialEstudianteScreen:{
+		screen:DetallesHistorialEstudiante
+	}
+	,
+	DetallesHistorialTutorScreen:{
+		screen:DetallesHistorialTutor
 	}
 })
