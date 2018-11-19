@@ -13,7 +13,10 @@ class ListaTutores extends React.Component {
   constructor() {
     super();
     
-
+    console.ignoredYellowBox = [
+      'Warning', 'Setting a timer'
+    ];
+    
     this.state={
       historial:[],
       estudianteId: '',

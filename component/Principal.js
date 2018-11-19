@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, Text, Button, Dimensions, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import { StyleSheet, Image, View, Text, Button, Dimensions, ScrollView, TouchableOpacity, Alert, BackHandler} from 'react-native';
 import { Constants } from 'expo';
 import firebase from '.././Firebase';
 import Helpers from './Helpers';
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0b2333',
     paddingVertical: 20,
     justifyContent: 'center',
+    borderRadius: 30,
   },
   touchIcon:{
     position: 'absolute',
@@ -83,8 +84,8 @@ export default class Principal extends Component {
   constructor() {
     super();
     
-    console.ignoredYellowBox = [
-      'Setting a timer'
+     console.ignoredYellowBox = [
+      'Warning', 'Setting a timer'
     ];
 
     this.state={
@@ -92,19 +93,16 @@ export default class Principal extends Component {
       apellido:'',
       ubicacion:'',
       currentColor:'#ff595e',
-      notificacionEstudiante:[],
-      notificacionTutor:[],
     }
 
   }
  
   Data = {}
 
-  async componentDidMount(){
-    const { navigation } = this.props;
-    const getData = navigation.getParam('data', 'NO-ID');
+  componentDidMount(){
+
     try{
-      let user = await firebase.auth().currentUser
+      let user = firebase.auth().currentUser
       Helpers.getNombre(user.uid ,(nombre) => {
         this.setState({
           nombre: nombre,
@@ -131,49 +129,41 @@ export default class Principal extends Component {
           })
         }
       })
-
-       /*los valores de notificacion estudiante y de notificacion tutor tienen que actualizarce automaticamente 
-       cuando se conteste una tutoria en la parte de tutor o cuando se marque como visto una solicitud de tutoria 
-       en la parte de estudiante
-       estos números se muestran en la barra de navegacion al lado de la campana
-       cuando carga por primera vez si se actualiza pero despues de contestar alguna notificacion no se modifican
-       los helpers de abajo cargan en un array todas las notificaciones
-       que despues en el render se cuentan la longitud para saber cuantas notificaciones hay*/
-
-       Helpers.getHistorial((historial) => {
-        historial.forEach((child) => {
-          Helpers.getNotificacionesEstudiante(child,user.uid, (not) => {
-            if(not){
-              this.setState({
-                notificacionEstudiante: this.state.notificacionEstudiante.concat([child]),
-              })
-            }
-          })
-          Helpers.getNotificacionesTutor(child,user.uid, (not) => {
-            if(not){
-              this.setState({
-                notificacionTutor: this.state.notificacionTutor.concat([child]),
-              })
-            }
-          })
-        })
+      Helpers.getNotificaciones(user.uid ,(noti) => {
+        if(noti){
+          Alert.alert("Notificaciones", "Usted tiene notificaciones nuevas")
+        }
       })
-      
     }catch(error){
       console.log(error)
     }  
   }
 
-      
+
+
+  componentWillMount() { 
+    BackHandler.addEventListener('hardwareBackPress', () => {return true}); 
+  }
+
+
+  handleLogOut = () => {
+    firebase.auth().signOut().then(() => {
+      this.props.navigation.navigate('LoginScreen')
+    }).catch(
+      error => {console.log('error')}
+    )
+  }
 
   render() {
     return (
     	<View>
     		<View>
           <NavBar style={styles}>
-            <NavButton>
+            <NavButton
+            onPress={this.handleLogOut}
+            >
               <NavButtonText style={styles.navBarOption}>
-                <Image source={require('.././assets/img/icons/menu.png')} />
+                <Image source={require('.././assets/img/icons/logout.png')} />
               </NavButtonText>
               </NavButton>
               <NavTitle style={styles.navBarTitle}>
@@ -184,7 +174,6 @@ export default class Principal extends Component {
             >
               <NavButtonText style={styles.navBarOption}>
               <Text>
-                {this.state.notificacionEstudiante.length + this.state.notificacionTutor.length}
                 <Image source={require('.././assets/img/icons/notification.png')} />
                 </Text>
               </NavButtonText>
@@ -240,7 +229,30 @@ export default class Principal extends Component {
                 </TouchableOpacity>      
               </View>
             </View>
-            <ScrollView tabLabel='Configuración'></ScrollView>
+            <ScrollView tabLabel='Configuración'>
+              <View style={styles.rolContainer}>
+                <TouchableOpacity style={styles.touchContainer}
+                onPress={() => this.props.navigation.navigate('EditarPerfilScreen')}
+                >
+                  <Image
+                    style={styles.touchIcon}
+                    source={require('.././assets/img/icons/edit.png')}
+                    />
+                  <Text style={styles.touchText}>
+                    EDITAR PERFIL
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.touchContainer}
+                onPress={() => this.props.navigation.navigate('CambiarPwScreen')}
+                >
+                  <Text style={styles.touchText}>CAMBIAR CONTRASEÑA</Text>
+                  <Image
+                    style={styles.touchIcon}
+                    source={require('.././assets/img/icons/password.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
           </ScrollableTabView>
 	     </View>
       	</View>

@@ -2,59 +2,100 @@ import React, {Component} from 'react';
 import { StyleSheet, Button, KeyboardAvoidingView, ScrollView, Text, View , TouchableOpacity, Image, TextInput, Alert, Picker} from 'react-native';
 import Logo from './Logo';
 import firebase from '.././Firebase';
+import Helpers from './Helpers';
 
-
-class SignUp extends React.Component {
+class EditarPerfil extends React.Component {
   static navigationOptions = {
-    title: 'Registro',
+    title: 'Editar perfil',
     headerStyle: { backgroundColor: '#ffca3a'},
   };
 
   constructor() {
-  super();
-  console.ignoredYellowBox = [
-  'Setting a timer'
-  ];
+
+    super();
+
+    console.ignoredYellowBox = [
+      'Warning', 'Setting a timer'
+    ];
+
+    this.state = { 
+      nombre:'',
+      apellido:'',
+      universidad:'',
+      carrera:'',
+      semestre:'',
+      edad:'',
+      sexo:'',
+      celular:''
+    }
   }
 
-  state = { nombre:'', apellido:'', universidad:'', carrera:'', semestre:'',edad:'', sexo:'', celular:'' ,email: '', password: '', errorMessage: null }
+  
 
-  handleSignup = () => {
-    const { email, password, nombre, apellido, universidad, carrera, semestre, edad, sexo, celular } = this.state
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((res) => {
-    firebase.database().ref('users/' + res.user.uid).set({
-        nombre: nombre,
-        apellido: apellido,
-        universidad: universidad,
-        carrera: carrera,
-        ubicacion: 'Barranquilla',
-        semestre: semestre,
-        edad: edad,
-        celular: celular,
-        sexo: sexo,
+  componentDidMount(){
+    try{
+      let user = firebase.auth().currentUser
+      Helpers.getNombre(user.uid ,(nombre) => {
+        this.setState({
+          nombre: nombre,
+        })
+      })
+      Helpers.getApellido(user.uid ,(apellido) => {
+        this.setState({
+          apellido: apellido,
+        })
+      })
+      Helpers.getUniversidad(user.uid ,(universidad) => {
+        this.setState({
+          universidad: universidad,
+        })
+      })
+      Helpers.getCarrera(user.uid ,(carrera) => {
+        this.setState({
+          carrera: carrera,
+        })
+      })
+      Helpers.getSemestre(user.uid ,(semestre) => {
+        this.setState({
+          semestre: semestre,
+        })
+      })
+      Helpers.getEdad(user.uid ,(edad) => {
+        this.setState({
+          edad: edad,
+        })
+      })
+      Helpers.getSexo(user.uid ,(sexo) => {
+        this.setState({
+          sexo: sexo,
+        })
+      })
+      Helpers.getCelular(user.uid ,(celular) => {
+        this.setState({
+          celular: celular,
+        })
+      })
+    }catch(error){
+      console.log(error)
+    }  
+  }
+
+  handleEditarPerfil = () => {
+    let user = firebase.auth().currentUser;
+    firebase.database().ref('users/' + user.uid).update({
+      nombre:this.state.nombre,
+      apellido:this.state.apellido,
+      universidad:this.state.universidad,
+      carrera:this.state.carrera,
+      semestre:this.state.semestre,
+      edad:this.state.edad,
+      sexo:this.state.sexo,
+      celular:this.state.celular,
     }).catch(
-        error => {Alert.alert(error.message);}
-    )
-    firebase.database().ref('tutores/' + res.user.uid).set({
-        estado: false
-    }).catch(
-        error => {Alert.alert(error.message);}
-    )
-    firebase.database().ref('tutores/' + res.user.uid + '/areas/').set({
-        matematicas:false,
-        calculo:false,
-        ingles:false,
-        programacion:false,
-        fisica: false,
-        quimica: false,
-    }).catch(
-        error => {Alert.alert(error.message);}
-    )
-    }).then(() => { 
-    	Alert.alert("Mensaje", "Cuenta creada correctamente");
-    	this.props.navigation.navigate('LoginScreen');
-    })   
+      error => {Alert.alert(error.message);}
+    );
+    Alert.alert("Mensaje", "Cambios guardados");
+      this.props.navigation.navigate('PrincipalScreen');
   }
   
   render() {
@@ -174,39 +215,11 @@ class SignUp extends React.Component {
             placeholderTextColor="rgba(11,35,51,0.7)"
             />
           </View>
-          <View style={styles.inputContainer}>
-            <Image source={require('.././assets/img/icons/email.png')} style={styles.icon} />
-            <TextInput
-            style={styles.inputText}
-            onChangeText={email => this.setState({ email })}
-            value={this.state.email}
-            underlineColorAndroid='transparent'
-            placeholder="Email"
-            returnKeyType="next"
-            onSubmitEditing={() => this.passwordInput.focus()}
-            ref={(input) => this.emailInput = input}
-            placeholderTextColor="rgba(11,35,51,0.7)"
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Image source={require('.././assets/img/icons/key.png')} style={styles.icon} />
-            <TextInput
-              style={styles.inputText}
-              onChangeText={password => this.setState({ password })}
-              value={this.state.password}
-              underlineColorAndroid='transparent'
-              placeholder="Password"
-              returnKeyType="go"
-              secureTextEntry
-              placeholderTextColor="rgba(11,35,51,0.7)"
-              ref={(input) => this.passwordInput = input}
-            />
-          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity 
-              onPress={this.handleSignup}
+              onPress={this.handleEditarPerfil}
               style={styles.touch}>
-              <Text style={styles.buttonText}>SIGN UP</Text>
+              <Text style={styles.buttonText}>GUARDAR CAMBIOS</Text>
             </TouchableOpacity>
           </View>
       </ScrollView>
@@ -265,4 +278,4 @@ const styles = StyleSheet.create({
 });
 
 
- export default SignUp;
+ export default EditarPerfil;

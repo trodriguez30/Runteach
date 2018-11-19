@@ -360,5 +360,22 @@ import firebase from '.././Firebase';
       })
     }
 
+    static getNotificaciones(userId,callback){
+      Helpers.getHistorial((historial) => {
+        historial.forEach((child) => {
+          let AreasPath = "/historial/"+child
+          firebase.database().ref(AreasPath).once('value',(snapshot) => {
+            if (snapshot.exists()) {
+              if(snapshot.val().estudianteId==userId && snapshot.val().estado!='pendiente' && snapshot.val().visto=='false'){
+                callback(true)
+              }else if(snapshot.val().tutorId==userId && snapshot.val().estado=='pendiente'){
+                callback(true)
+              }
+            }
+          })
+        })
+      })
+    }
+
 }
   module.exports = Helpers

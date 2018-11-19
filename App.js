@@ -10,6 +10,9 @@ import SolicitudTutoria from './component/SolicitudTutoria';
 import Notificaciones from './component/Notificaciones';
 import DetallesHistorialEstudiante from './component/DetallesHistorialEstudiante';
 import DetallesHistorialTutor from './component/DetallesHistorialTutor';
+import RecuperarPw from './component/RecuperarPw';
+import CambiarPw from './component/CambiarPw';
+import EditarPerfil from './component/EditarPerfil';
 import {createStackNavigator} from 'react-navigation'
 import * as firebase from 'firebase';
 
@@ -62,5 +65,15 @@ const AppStackNavigator = new createStackNavigator({
 	,
 	DetallesHistorialTutorScreen:{
 		screen:DetallesHistorialTutor
-	}
+	},
+	RecuperarPwScreen:{
+		screen:RecuperarPw
+	},
+	CambiarPwScreen:{
+		screen:CambiarPw
+	},
+	EditarPerfilScreen:{
+		screen:EditarPerfil
+	},
+
 })

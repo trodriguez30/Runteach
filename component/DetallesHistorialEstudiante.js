@@ -13,7 +13,10 @@ class ListaTutores extends React.Component {
   constructor() {
     super();
     
-
+    console.ignoredYellowBox = [
+      'Warning', 'Setting a timer'
+    ];
+    
     this.state={
       historial:[],
       tutorId: '',
@@ -56,12 +59,10 @@ class ListaTutores extends React.Component {
       let user = await firebase.auth().currentUser;
       firebase.database().ref('historial/' + this.state.historial[0]).update({
         visto: 'true'
-      }).then( () => {
-        Alert.alert("Mensaje", "Solicitud vista");
-        this.props.navigation.navigate('PrincipalScreen');
       }).catch(
         error => {Alert.alert(error.message);}
-      )
+      );
+      this.props.navigation.navigate('PrincipalScreen');
     }
   
   render() {

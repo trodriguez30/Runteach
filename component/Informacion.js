@@ -8,6 +8,10 @@ export default class SectionListBasics extends Component {
 	constructor() {
 	super();
 
+  console.ignoredYellowBox = [
+      'Warning', 'Setting a timer'
+    ];
+
 	this.state={
     universidad:'',
     carrera:'',

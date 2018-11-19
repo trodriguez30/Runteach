@@ -13,7 +13,11 @@ class Login extends React.Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('PrincipalScreen', {data: true}))
+      .then(() => { 
+        this.emailInput.clear()
+        this.passwordInput.clear()
+        this.props.navigation.navigate('PrincipalScreen')
+      })
       .catch(
         error => {(Alert.alert("ERROR", "Usuario o contraseña incorrecta"));}
         )
@@ -38,7 +42,9 @@ class Login extends React.Component {
             underlineColorAndroid='transparent'
             placeholder="Email"
             returnKeyType="next"
+            autoCapitalize="none"
             onSubmitEditing={() => this.passwordInput.focus()}
+            ref={(input) => this.emailInput = input}
             placeholderTextColor="rgba(11,35,51,0.7)"
             />
           </View>
@@ -70,7 +76,9 @@ class Login extends React.Component {
         >
           <Text style={styles.optionsText}>Create Account</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+        onPress={() => this.props.navigation.navigate('RecuperarPwScreen')}
+        >
           <Text style={styles.optionsText}>Forgot your Password?</Text>
         </TouchableOpacity>
       </View>

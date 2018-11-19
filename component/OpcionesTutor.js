@@ -113,8 +113,8 @@ export default class OptionsTutor extends Component {
   });
 
 
-    _handleUpdate = async () => {
-      let user = await firebase.auth().currentUser;
+    _handleUpdate = () => {
+      let user = firebase.auth().currentUser;
       firebase.database().ref('tutores/' + user.uid).update({
         estado: this.state.isOnEstadoToggleSwitch
       }).catch(
